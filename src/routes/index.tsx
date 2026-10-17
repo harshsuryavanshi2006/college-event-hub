@@ -38,7 +38,7 @@ const clubs = [
   { icon: Palette, name: "Design Club", tag: "Design • Create • Inspire", n: 37, c: "bg-secondary" },
 ];
 
-function Heading({ title, sub }: { title: string; sub: string }) {
+function Heading({ title, sub, to }: { title: string; sub: string; to?: string }) {
   return (
     <div className="flex items-end justify-between gap-4 reveal">
       <div>
@@ -47,9 +47,15 @@ function Heading({ title, sub }: { title: string; sub: string }) {
         </h2>
         <p className="text-muted-foreground">{sub}</p>
       </div>
-      <button className="rounded-full border bg-card px-4 py-2 text-sm font-medium flex items-center gap-1 hover:shadow-md transition">
-        View All <ArrowRight className="size-4" />
-      </button>
+      {to ? (
+        <Link to={to} className="rounded-full border bg-card px-4 py-2 text-sm font-medium flex items-center gap-1 hover:shadow-md transition">
+          View All <ArrowRight className="size-4" />
+        </Link>
+      ) : (
+        <button className="rounded-full border bg-card px-4 py-2 text-sm font-medium flex items-center gap-1 hover:shadow-md transition">
+          View All <ArrowRight className="size-4" />
+        </button>
+      )}
     </div>
   );
 }
@@ -69,8 +75,10 @@ function Index() {
         <div className="mx-auto max-w-7xl flex items-center justify-between px-6 h-16">
           <a className="font-hand text-3xl text-secondary flex items-center"><Zap className="size-6 text-primary fill-primary" />Spark</a>
           <nav className="hidden md:flex gap-8 text-sm">
-            {["Home", "Events", "Clubs", "Opportunities", "Profile"].map((l, i) => (
-              <a key={l} href="#" className={`pb-1 border-b-2 transition hover:text-accent ${i === 0 ? "border-primary font-semibold" : "border-transparent"}`}>{l}</a>
+            <Link to="/" className="pb-1 border-b-2 border-primary font-semibold transition hover:text-accent">Home</Link>
+            <Link to="/events" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Events</Link>
+            {["Clubs", "Opportunities", "Profile"].map((l) => (
+              <a key={l} href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">{l}</a>
             ))}
           </nav>
           <div className="flex items-center gap-4">
