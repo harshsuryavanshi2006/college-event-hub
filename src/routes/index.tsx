@@ -99,7 +99,7 @@ function Index() {
             </h1>
             <p className="mt-4 text-xl animate-fade-up [animation-delay:.2s]">Discover. Participate. Grow.<br />Your campus, your stage.</p>
             <div className="mt-8 flex gap-4 animate-fade-up [animation-delay:.4s]">
-              <a href="#events" className={`${yellowBtn} px-6 py-3`}>Explore Events <ArrowRight className="size-4" /></a>
+              <Link to="/events" className={`${yellowBtn} px-6 py-3`}>Explore Events <ArrowRight className="size-4" /></Link>
               <button className="rounded-full border border-secondary-foreground/60 px-6 py-3 font-semibold hover:bg-secondary-foreground hover:text-secondary transition">Join Now</button>
             </div>
           </div>
@@ -119,7 +119,7 @@ function Index() {
 
       <main className="mx-auto max-w-7xl px-6 py-16 space-y-20">
         <section id="events" className="space-y-8">
-          <Heading title="Upcoming Events" sub="Don't miss out on what's happening around campus!" />
+          <Heading title="Upcoming Events" sub="Don't miss out on what's happening around campus!" to="/events" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {events.map((e, i) => (
               <article key={e.title} className="reveal rounded-2xl bg-card p-3 shadow-sm border hover:-translate-y-2 hover:shadow-xl transition duration-300" style={{ transitionDelay: `${i * 80}ms` }}>
@@ -177,7 +177,7 @@ function Index() {
           <div className="relative p-10 md:p-14 max-w-md space-y-4">
             <h2 className="font-hand text-4xl">Be a Part of Something Bigger</h2>
             <p>Your campus. Your people. Your story.</p>
-            <a href="#events" className={`${yellowBtn} px-5 py-2 text-sm`}>Explore Events <ArrowRight className="size-4" /></a>
+            <Link to="/events" className={`${yellowBtn} px-5 py-2 text-sm`}>Explore Events <ArrowRight className="size-4" /></Link>
           </div>
         </section>
       </main>
@@ -185,7 +185,11 @@ function Index() {
       <footer className="bg-secondary text-secondary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-12 grid md:grid-cols-4 gap-8">
           <div><p className="font-hand text-3xl flex items-center"><Zap className="size-6 text-primary fill-primary" />Spark</p><p className="text-sm opacity-75 mt-2">Discover. Participate. Grow.<br />Your campus, your stage.</p></div>
-          <div className="text-sm space-y-1"><p className="font-semibold mb-2">Quick Links</p>{["Home", "Events", "Clubs", "Opportunities", "Profile"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}</div>
+          <div className="text-sm space-y-1"><p className="font-semibold mb-2">Quick Links</p>
+            <Link to="/" className="block opacity-75 hover:opacity-100 hover:text-primary">Home</Link>
+            <Link to="/events" className="block opacity-75 hover:opacity-100 hover:text-primary">Events</Link>
+            {["Clubs", "Opportunities", "Profile"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}
+          </div>
           <div><p className="font-semibold text-sm mb-3">Follow Us</p><div className="flex gap-3">{[Instagram, Youtube, Twitter, Linkedin].map((I, i) => <a key={i} href="#" className="size-9 rounded-lg border border-secondary-foreground/30 grid place-items-center hover:bg-primary hover:text-primary-foreground transition"><I className="size-4" /></a>)}</div></div>
           <div><p className="font-semibold text-sm">Join our Newsletter</p><p className="text-xs opacity-75 mb-3">Get the latest updates and events.</p>
             <form onSubmit={(e) => e.preventDefault()} className="flex rounded-full border border-secondary-foreground/30 p-1"><input placeholder="Your email address" className="bg-transparent flex-1 px-3 text-sm outline-none min-w-0" /><button className={`${yellowBtn} px-4 py-1.5 text-sm`}>Subscribe</button></form></div>
