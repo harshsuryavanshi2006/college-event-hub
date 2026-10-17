@@ -77,9 +77,10 @@ function Index() {
           <nav className="hidden md:flex gap-8 text-sm">
             <Link to="/" className="pb-1 border-b-2 border-primary font-semibold transition hover:text-accent">Home</Link>
             <Link to="/events" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Events</Link>
-            {["Clubs", "Opportunities", "Profile"].map((l) => (
+            {["Clubs", "Opportunities"].map((l) => (
               <a key={l} href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">{l}</a>
             ))}
+            <Link to="/profile" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Profile</Link>
           </nav>
           <div className="flex items-center gap-4">
             <Search className="size-5" /><Bell className="size-5 text-primary fill-primary" />
