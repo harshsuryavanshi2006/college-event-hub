@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import {
   ArrowRight, Bell, Search, CalendarPlus, Users, Lightbulb, Heart, Calendar, MapPin,
