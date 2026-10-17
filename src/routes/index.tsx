@@ -77,9 +77,10 @@ function Index() {
           <nav className="hidden md:flex gap-8 text-sm">
             <Link to="/" className="pb-1 border-b-2 border-primary font-semibold transition hover:text-accent">Home</Link>
             <Link to="/events" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Events</Link>
-            {["Clubs", "Opportunities", "Profile"].map((l) => (
+            {["Clubs", "Opportunities"].map((l) => (
               <a key={l} href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">{l}</a>
             ))}
+            <Link to="/profile" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Profile</Link>
           </nav>
           <div className="flex items-center gap-4">
             <Search className="size-5" /><Bell className="size-5 text-primary fill-primary" />
@@ -188,7 +189,8 @@ function Index() {
           <div className="text-sm space-y-1"><p className="font-semibold mb-2">Quick Links</p>
             <Link to="/" className="block opacity-75 hover:opacity-100 hover:text-primary">Home</Link>
             <Link to="/events" className="block opacity-75 hover:opacity-100 hover:text-primary">Events</Link>
-            {["Clubs", "Opportunities", "Profile"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}
+            {["Clubs", "Opportunities"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}
+            <Link to="/profile" className="block opacity-75 hover:opacity-100 hover:text-primary">Profile</Link>
           </div>
           <div><p className="font-semibold text-sm mb-3">Follow Us</p><div className="flex gap-3">{[Instagram, Youtube, Twitter, Linkedin].map((I, i) => <a key={i} href="#" className="size-9 rounded-lg border border-secondary-foreground/30 grid place-items-center hover:bg-primary hover:text-primary-foreground transition"><I className="size-4" /></a>)}</div></div>
           <div><p className="font-semibold text-sm">Join our Newsletter</p><p className="text-xs opacity-75 mb-3">Get the latest updates and events.</p>
