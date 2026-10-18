@@ -14,7 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      event_registrations: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          student_details: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          student_details: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          student_details?: Json
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          batch: string
+          college: string
+          created_at: string
+          date_of_birth: string | null
+          division: string
+          full_name: string
+          id: string
+          phone: string
+          username: string
+          year: string
+        }
+        Insert: {
+          batch?: string
+          college?: string
+          created_at?: string
+          date_of_birth?: string | null
+          division?: string
+          full_name?: string
+          id: string
+          phone?: string
+          username?: string
+          year?: string
+        }
+        Update: {
+          batch?: string
+          college?: string
+          created_at?: string
+          date_of_birth?: string | null
+          division?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          username?: string
+          year?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
