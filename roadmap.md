@@ -6,8 +6,11 @@
 - Profile dashboard (`/profile`) — profile header, stats, progress, upcoming events, activity, skills, certificates, quick links, dark sidebar; "Back to Home" → `/`; linked from Profile tab on Home and Events
 
 ## Next
-- [ ] Sign in page
-- [ ] Registration page
+- [ ] Build reference-matched signup/login with immediate profile access
+- [ ] Build event registration with Division and Batch choices and saved activity
+- [ ] Connect Join Now and every event Register action
+- [ ] Replace sample profile data with saved identity and Edit Profile
+- [ ] Verify signup, edit profile, register, and refreshed activity end-to-end
 - [ ] Clubs page (nav "Clubs" is still a dead `#` link on Home)
 - [ ] Opportunities page (nav "Opportunities" is still a dead `#` link on Home)
 - [ ] Hook the dashboard up to a real logged-in account (currently hardcoded sample details for Harsh Suryavanshi, 2nd Year CSE, PIT Hinjewadi)
