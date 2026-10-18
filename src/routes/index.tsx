@@ -5,6 +5,9 @@ import {
   Music, Camera, BookOpen, Palette, PersonStanding, Star, Sparkles, Rocket,
   Instagram, Youtube, Twitter, Linkedin, Zap,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAccount } from "@/components/account-provider";
+import { eventId, usernameFromEmail } from "@/lib/student-rules";
 import hero from "@/assets/hero.jpg";
 import campus from "@/assets/campus.jpg";
 import garba from "@/assets/garba.jpg";
@@ -61,6 +64,7 @@ function Heading({ title, sub, to }: { title: string; sub: string; to?: string }
 }
 
 function Index() {
+  const account = useAccount();
   useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.15 });
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
@@ -84,7 +88,7 @@ function Index() {
           </nav>
           <div className="flex items-center gap-4">
             <Search className="size-5" /><Bell className="size-5 text-primary fill-primary" />
-            <div className="size-9 rounded-full bg-accent text-accent-foreground grid place-items-center text-sm font-bold">A</div>
+            <Button asChild variant="outline" size="sm"><Link to={account ? "/profile" : "/auth"} search={account ? {} : { mode: "signup", next: "profile", event: "" }}>{account ? usernameFromEmail(account.email ?? "").slice(0,12) : "Join Now"}</Link></Button>
           </div>
         </div>
       </header>
@@ -101,7 +105,7 @@ function Index() {
             <p className="mt-4 text-xl animate-fade-up [animation-delay:.2s]">Discover. Participate. Grow.<br />Your campus, your stage.</p>
             <div className="mt-8 flex gap-4 animate-fade-up [animation-delay:.4s]">
               <Link to="/events" className={`${yellowBtn} px-6 py-3`}>Explore Events <ArrowRight className="size-4" /></Link>
-              <button className="rounded-full border border-secondary-foreground/60 px-6 py-3 font-semibold hover:bg-secondary-foreground hover:text-secondary transition">Join Now</button>
+              <Button asChild variant="outline" className="h-auto rounded-full bg-transparent border-secondary-foreground/60 text-secondary-foreground px-6 py-3"><Link to={account ? "/profile" : "/auth"} search={account ? {} : { mode: "signup", next: "profile", event: "" }}>{account ? "My Profile" : "Join Now"}</Link></Button>
             </div>
           </div>
           <Star className="absolute top-12 left-[40%] size-10 text-primary animate-float" />
@@ -133,7 +137,7 @@ function Index() {
                   <h3 className="font-semibold pt-2">{e.title}</h3>
                   <p className="text-xs text-muted-foreground flex gap-1 items-center"><Calendar className="size-3.5" />{e.date} | {e.time}</p>
                   <p className="text-xs text-muted-foreground flex gap-1 items-center"><MapPin className="size-3.5" />{e.place}</p>
-                  <button className={`${yellowBtn} w-full justify-center py-2 text-sm mt-2`}>Register Now</button>
+                  <Button asChild className={`${yellowBtn} w-full justify-center py-2 text-sm mt-2`}><Link to="/registration" search={{ event: eventId(e.title) }}>Register Now</Link></Button>
                 </div>
               </article>
             ))}

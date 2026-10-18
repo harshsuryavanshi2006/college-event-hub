@@ -4,6 +4,9 @@ import {
   ArrowRight, Bell, Search, Calendar, MapPin, Zap, Star, Sparkles, Lightbulb,
   PenLine, Users, Smile, Instagram, Youtube, Twitter, Linkedin, Check,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAccount } from "@/components/account-provider";
+import { eventId, usernameFromEmail } from "@/lib/student-rules";
 import hero from "@/assets/hero.jpg";
 import garba from "@/assets/garba.jpg";
 import football from "@/assets/football.jpg";
@@ -60,7 +63,7 @@ function EventCard({ e, past: isPast }: { e: (typeof upcoming)[number]; past?: b
         <p className="text-xs text-accent">{e.tags}</p>
         {isPast
           ? <button className="w-full rounded-full border py-2 text-sm font-medium mt-2 hover:bg-muted transition">View Highlights</button>
-          : <button className={`${yellowBtn} w-full py-2 text-sm mt-2`}>View Details <ArrowRight className="size-4" /></button>}
+          : <Button asChild className={`${yellowBtn} w-full py-2 text-sm mt-2`}><Link to="/registration" search={{ event: eventId(e.title) }}>Register Now <ArrowRight className="size-4" /></Link></Button>}
       </div>
     </article>
   );
@@ -83,6 +86,7 @@ function SectionHead({ icon: I, title, sub }: { icon: typeof Star; title: string
 }
 
 function EventsPage() {
+  const account = useAccount();
   useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.1 });
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
@@ -104,7 +108,7 @@ function EventsPage() {
           </nav>
           <div className="flex items-center gap-4">
             <Search className="size-5" /><Bell className="size-5 text-primary fill-primary" />
-            <div className="size-9 rounded-full bg-accent text-accent-foreground grid place-items-center text-sm font-bold">A</div>
+            <Button asChild variant="outline" size="sm"><Link to={account ? "/profile" : "/auth"} search={account ? {} : { mode: "signup", next: "profile", event: "" }}>{account ? usernameFromEmail(account.email ?? "").slice(0,12) : "Join Now"}</Link></Button>
           </div>
         </div>
       </header>
@@ -229,7 +233,7 @@ function EventsPage() {
             <div className="reveal rounded-2xl bg-muted border p-5 space-y-3 relative overflow-hidden">
               <h3 className="font-hand text-2xl text-secondary flex items-center gap-2"><PenLine className="size-5 text-accent" /> Registration</h3>
               <p className="text-sm text-muted-foreground">Quickly register for events, clubs and more!</p>
-              <button className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-5 py-2 text-sm font-semibold transition hover:scale-105 hover:shadow-lg">Go to Registration <ArrowRight className="size-4" /></button>
+              <Button asChild variant="secondary" className="rounded-full"><Link to="/registration" search={{ event: "" }}>Go to Registration <ArrowRight className="size-4" /></Link></Button>
               <p className="absolute right-4 bottom-4 font-hand text-lg text-accent rotate-[-10deg]">Be a Part of It!</p>
             </div>
 
