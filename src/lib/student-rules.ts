@@ -2,7 +2,7 @@ import { z } from 'zod';
 export const divisions = ['Comp', 'IT', 'Entc', 'Other'] as const;
 export const batches = ['2024', '2025', '2026', '2027'] as const;
 export const years = ['1st Year', '2nd Year', '3rd Year', '4th Year'] as const;
-export function usernameFromEmail(email: string) { return email.split('@')[0].replace(/\d/g, '') || 'student'; }
+export function usernameFromEmail(email: string) { return (email.split('@')[0] ?? '').replace(/\d/g, '') || 'student'; }
 export const eventCatalog = [
  { id: 'freshers-garba-session', title: 'Freshers Garba Session', tag: 'Cultural', date: '12 Oct 2025', time: '5:00 PM – 8:30 PM', place: 'College Ground', image: 'garba' },
  { id: 'open-mic-night', title: 'Open Mic Night', tag: 'Creative', date: '16 Oct 2025', time: '6:00 PM – 9:00 PM', place: 'Library Hall', image: 'hero' },
