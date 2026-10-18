@@ -19,3 +19,7 @@
 ## Notes
 - Keep credit use minimal: reuse existing images in `src/assets` and CSS gradients before generating anything new.
 - Nothing is published yet.
+
+## Where we stopped (18 Oct)
+- Sign up / log in, editable profile, and event registration are done and verified end-to-end; every "Join Now" and "Register Now" button routes into those flows, and registrations show up in Recent Activity.
+- First thing next session: Clubs page, then Opportunities page — both nav links on Home are still dead `#` links.
