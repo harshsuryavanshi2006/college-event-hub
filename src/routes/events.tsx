@@ -101,9 +101,8 @@ function EventsPage() {
           <nav className="hidden md:flex gap-8 text-sm">
             <Link to="/" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Home</Link>
             <Link to="/events" className="pb-1 border-b-2 border-primary font-semibold transition hover:text-accent">Events</Link>
-            {["Clubs", "Opportunities"].map((l) => (
-              <a key={l} href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">{l}</a>
-            ))}
+            <Link to="/clubs" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Clubs</Link>
+            <a href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Opportunities</a>
             <Link to="/profile" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Profile</Link>
           </nav>
           <div className="flex items-center gap-4">
@@ -245,7 +244,7 @@ function EventsPage() {
                   <div key={c} className={`size-9 rounded-full border-2 border-card grid place-items-center text-xs font-bold text-accent-foreground ${["bg-accent", "bg-secondary", "bg-cyan", "bg-primary text-primary-foreground"][i]}`}>{c}</div>
                 ))}
               </div>
-              <button className="rounded-full border px-5 py-2 text-sm font-medium hover:bg-muted transition">Join Community →</button>
+              <Button asChild variant="outline" className="rounded-full"><Link to="/clubs">Join Community <ArrowRight className="size-4" /></Link></Button>
               <p className="absolute right-3 top-4 font-hand text-lg text-accent rotate-[8deg]">Same Minds<br />Bigger Dreams</p>
             </div>
           </aside>
@@ -258,7 +257,8 @@ function EventsPage() {
           <div className="text-sm space-y-1"><p className="font-semibold mb-2">Quick Links</p>
             <Link to="/" className="block opacity-75 hover:opacity-100 hover:text-primary">Home</Link>
             <Link to="/events" className="block text-primary font-semibold">Events</Link>
-            {["Clubs", "Opportunities"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}
+            <Link to="/clubs" className="block opacity-75 hover:opacity-100 hover:text-primary">Clubs</Link>
+            <a href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">Opportunities</a>
             <Link to="/profile" className="block opacity-75 hover:opacity-100 hover:text-primary">Profile</Link>
           </div>
           <div><p className="font-semibold text-sm mb-3">Follow Us</p><div className="flex gap-3">{[Instagram, Youtube, Twitter, Linkedin].map((I, i) => <a key={i} href="#" className="size-9 rounded-lg border border-secondary-foreground/30 grid place-items-center hover:bg-primary hover:text-primary-foreground transition"><I className="size-4" /></a>)}</div></div>

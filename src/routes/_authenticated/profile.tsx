@@ -12,6 +12,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { StudentFields, fieldClass } from '@/components/student-fields';
 import { EventThumbnail } from '@/components/event-thumbnail';
+import { clubCatalog } from '@/lib/club-data';
 import { studentQuery } from '@/lib/student-query';
 import { eventCatalog, profileSchema } from '@/lib/student-rules';
 import { saveProfile } from '@/lib/student.functions';
@@ -66,11 +67,21 @@ function CardHead({ icon: I, title, sub, action = "View All" }: { icon: typeof S
 }
 
 function ProfilePage() {
-  const { profile, registrations } = useSuspenseQuery(studentQuery).data;
+  const { profile, registrations, memberships, clubs } = useSuspenseQuery(studentQuery).data;
   const name = profile.full_name || profile.username;
   const myUpcoming = registrations.flatMap(r => { const e = eventCatalog.find(e => e.id === r.event_id); return e ? [e] : []; });
-  const activity = registrations.flatMap(r => { const e = eventCatalog.find(e => e.id === r.event_id); return e ? [{ ...e, sub: `Registered · ${new Date(r.created_at).toLocaleDateString('en-GB')}`, status: 'Registered' }] : []; });
-  const stats = [{ icon: CalendarDays, n: String(registrations.length), label: 'Events Registered', sub: 'Your next experiences', c: 'bg-accent' },{ icon: Users, n: '0', label: 'Clubs Joined', sub: '', c: 'bg-cyan' },{ icon: Award, n: '0', label: 'Certificates Earned', sub: '', c: 'bg-primary text-primary-foreground' },{ icon: Flame, n: '0', label: 'Day Streak', sub: '', c: 'bg-accent' }];
+  const joinedClubs = memberships.flatMap(membership => {
+    const club = clubs.find(item => item.id === membership.club_id);
+    const catalogEntry = clubCatalog.find(item => item.id === membership.club_id);
+    return club && catalogEntry ? [{ ...club, category: catalogEntry.category, created_at: membership.created_at }] : [];
+  });
+  const eventActivity = registrations.flatMap(r => {
+    const e = eventCatalog.find(e => e.id === r.event_id);
+    return e ? [{ ...e, sub: `Registered · ${new Date(r.created_at).toLocaleDateString('en-GB')}`, status: 'Registered', created_at: r.created_at }] : [];
+  });
+  const clubActivity = joinedClubs.map(club => ({ title: club.name, image: '', sub: `Joined · ${new Date(club.created_at).toLocaleDateString('en-GB')}`, status: 'Joined', created_at: club.created_at }));
+  const activity = [...eventActivity, ...clubActivity].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  const stats = [{ icon: CalendarDays, n: String(registrations.length), label: 'Events Registered', sub: 'Your next experiences', c: 'bg-accent' },{ icon: Users, n: String(joinedClubs.length), label: 'Clubs Joined', sub: '', c: 'bg-cyan' },{ icon: Award, n: '0', label: 'Certificates Earned', sub: '', c: 'bg-primary text-primary-foreground' },{ icon: Flame, n: '0', label: 'Day Streak', sub: '', c: 'bg-accent' }];
   const [editing,setEditing] = useState(false); const [busy,setBusy] = useState(false); const [error,setError] = useState('');
   const save = useServerFn(saveProfile); const client = useQueryClient(); const navigate = useNavigate();
   async function edit(e: React.FormEvent<HTMLFormElement>) {
@@ -196,9 +207,10 @@ function ProfilePage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
+            <Card><h3 className="mb-4 flex items-center gap-2 font-hand text-2xl text-secondary"><Users className="size-5 text-accent" />My Clubs</h3>{!joinedClubs.length ? <p className="text-sm text-muted-foreground">You haven’t joined a club yet.</p> : <div className="space-y-3">{joinedClubs.map(club => <div key={club.id} className="flex items-center justify-between gap-3"><div><p className="font-medium">{club.name}</p><p className="text-xs text-muted-foreground">{club.category}</p></div><span className="rounded-full bg-cyan/20 px-2.5 py-1 text-xs">Joined</span></div>)}</div>}</Card>
             <Card><h2 className="font-hand text-2xl">My Certificates</h2><p className="text-sm text-muted-foreground mt-3">No certificates earned yet.</p></Card>
-            <Card><h2 className="font-hand text-2xl mb-3">Quick Links</h2><div className="flex flex-wrap gap-3"><Button asChild><Link to="/events">Explore Events <ArrowRight /></Link></Button><Button asChild variant="outline"><Link to="/registration" search={{ event: '' }}>Register for Events</Link></Button><Button variant="outline" onClick={() => setEditing(true)}>Edit Profile</Button></div></Card>
           </div>
+          <Card><h2 className="font-hand text-2xl mb-3">Quick Links</h2><div className="flex flex-wrap gap-3"><Button asChild><Link to="/events">Explore Events <ArrowRight /></Link></Button><Button asChild variant="outline"><Link to="/clubs">Explore Clubs</Link></Button><Button asChild variant="outline"><Link to="/registration" search={{ event: '' }}>Register for Events</Link></Button><Button variant="outline" onClick={() => setEditing(true)}>Edit Profile</Button></div></Card>
           {editing && <div className="fixed inset-0 z-50 bg-secondary/60 grid place-items-center p-4" role="dialog" aria-modal="true" aria-labelledby="edit-title"><form onSubmit={edit} className="bg-card rounded-2xl border shadow-lg p-6 w-full max-w-xl max-h-[90vh] overflow-y-auto"><div className="flex justify-between items-center mb-5"><h2 id="edit-title" className="font-hand text-3xl">Edit Profile</h2><Button type="button" variant="ghost" onClick={() => setEditing(false)}>Cancel</Button></div><label className="grid gap-2 text-sm font-medium mb-5">Username<input name="username" required maxLength={100} defaultValue={profile.username} className={fieldClass} /></label><StudentFields defaults={profile} />{error && <p role="alert" className="text-sm text-destructive mt-3">{error}</p>}<Button disabled={busy} className="w-full mt-6 h-12">{busy ? 'Saving…' : 'Save Profile'}</Button></form></div>}
 
           {/* Banner */}

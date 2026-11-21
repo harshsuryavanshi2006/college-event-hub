@@ -14,3 +14,4 @@
 - Store profiles and event registrations in Lovable Cloud with owner-scoped policies; validate writes with shared Zod schemas and database rules to protect student data.
 - Use one root account provider for session changes; use protected server functions and query loaders for private reads so saved activity is refreshed consistently.
 - Keep the event registration catalog in the shared student rules module; resolve entry-point titles to stable event identifiers so selections and activity refer to the same event.
+- Keep club catalog, memberships, and suggestions in Lovable Cloud with owner-scoped access; update public member totals transactionally only after unique membership inserts.

@@ -14,6 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      club_memberships: {
+        Row: {
+          club_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          club_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          club_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_memberships_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_suggestions: {
+        Row: {
+          category: string
+          club_name: string
+          created_at: string
+          id: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          club_name: string
+          created_at?: string
+          id?: string
+          reason: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          club_name?: string
+          created_at?: string
+          id?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      clubs: {
+        Row: {
+          id: string
+          member_count: number
+          name: string
+        }
+        Insert: {
+          id: string
+          member_count?: number
+          name: string
+        }
+        Update: {
+          id?: string
+          member_count?: number
+          name?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string

@@ -11,15 +11,16 @@
 - [x] Connect Join Now and every event Register action
 - [x] Replace sample profile data with saved identity and Edit Profile
 - [x] Verify signup, edit profile, register, and refreshed activity end-to-end
-- [ ] Clubs page (nav "Clubs" is still a dead `#` link on Home)
+- [x] Build the Clubs page from the supplied reference and link it from Home, Events, and Profile
+- [x] Require sign-in for club joins and suggestions; save successful joins to Profile activity
+- [x] Start all club counts at zero and update totals only after unique successful joins
 - [ ] Opportunities page (nav "Opportunities" is still a dead `#` link on Home)
-- [ ] Replace placeholder event dates/times/venues and club member counts with real data
-- [ ] Wire club "Join" buttons to real actions
+- [ ] Replace placeholder event dates/times/venues with real data
 
 ## Notes
 - Keep credit use minimal: reuse existing images in `src/assets` and CSS gradients before generating anything new.
 - Nothing is published yet.
 
-## Where we stopped (18 Oct)
-- Sign up / log in, editable profile, and event registration are done and verified end-to-end; every "Join Now" and "Register Now" button routes into those flows, and registrations show up in Recent Activity.
-- First thing next session: Clubs page, then Opportunities page — both nav links on Home are still dead `#` links.
+## Where we stopped (21 Nov)
+- Sign up / log in, editable profile, event registration, and the Clubs page are in place. Unique club joins update live counts and appear in Profile activity; suggestions are saved for review.
+- Next: build the Opportunities page and replace placeholder event dates, times, and venues.

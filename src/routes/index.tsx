@@ -1,13 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
   ArrowRight, Bell, Search, CalendarPlus, Users, Lightbulb, Heart, Calendar, MapPin,
-  Music, Camera, BookOpen, Palette, PersonStanding, Star, Sparkles, Rocket,
+  Star, Sparkles, Rocket,
   Instagram, Youtube, Twitter, Linkedin, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "@/components/account-provider";
 import { eventId, usernameFromEmail } from "@/lib/student-rules";
+import { clubCatalog, clubCountsQuery } from "@/lib/club-data";
 import hero from "@/assets/hero.jpg";
 import campus from "@/assets/campus.jpg";
 import garba from "@/assets/garba.jpg";
@@ -33,14 +35,6 @@ const events = [
   { tag: "Design", title: "Creative Challenge", date: "20 Oct 2025", time: "10:00 AM – 1:00 PM", place: "Design Studio", img: null },
   { tag: "Sports", title: "Football Tournament", date: "25 Oct 2025", time: "4:00 PM – 7:00 PM", place: "Sports Ground", img: football },
 ];
-const clubs = [
-  { icon: PersonStanding, name: "Dance Club", tag: "Move • Create • Perform", n: 48, c: "bg-accent" },
-  { icon: Music, name: "Music Club", tag: "Play • Jam • Create", n: 32, c: "bg-secondary" },
-  { icon: Camera, name: "Photography Club", tag: "Capture • Explore • Share", n: 26, c: "bg-cyan" },
-  { icon: BookOpen, name: "Literature Club", tag: "Read • Write • Discuss", n: 41, c: "bg-accent" },
-  { icon: Palette, name: "Design Club", tag: "Design • Create • Inspire", n: 37, c: "bg-secondary" },
-];
-
 function Heading({ title, sub, to }: { title: string; sub: string; to?: string }) {
   return (
     <div className="flex items-end justify-between gap-4 reveal">
@@ -65,6 +59,8 @@ function Heading({ title, sub, to }: { title: string; sub: string; to?: string }
 
 function Index() {
   const account = useAccount();
+  const clubCounts = useQuery(clubCountsQuery);
+  const clubCountById = new Map((clubCounts.data ?? []).map((club) => [club.id, club.member_count]));
   useEffect(() => {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.15 });
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
@@ -81,9 +77,8 @@ function Index() {
           <nav className="hidden md:flex gap-8 text-sm">
             <Link to="/" className="pb-1 border-b-2 border-primary font-semibold transition hover:text-accent">Home</Link>
             <Link to="/events" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Events</Link>
-            {["Clubs", "Opportunities"].map((l) => (
-              <a key={l} href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">{l}</a>
-            ))}
+            <Link to="/clubs" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Clubs</Link>
+            <a href="#" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Opportunities</a>
             <Link to="/profile" className="pb-1 border-b-2 border-transparent transition hover:text-accent">Profile</Link>
           </nav>
           <div className="flex items-center gap-4">
@@ -145,16 +140,16 @@ function Index() {
         </section>
 
         <section className="space-y-8">
-          <Heading title="Explore Clubs" sub="Find your people. Follow your passion." />
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-5">
-            {clubs.map(({ icon: I, ...c }) => (
-              <div key={c.name} className="reveal rounded-2xl bg-card border p-5 space-y-2 hover:-translate-y-1 hover:shadow-lg transition">
-                <div className={`size-11 rounded-xl ${c.c} text-accent-foreground grid place-items-center`}><I className="size-6" /></div>
-                <h3 className="font-semibold">{c.name}</h3>
-                <p className="text-xs text-accent">{c.tag}</p>
-                <p className="text-xs text-muted-foreground">{c.n} members</p>
-                <button className="rounded-full border px-5 py-1 text-sm hover:bg-primary transition">Join</button>
-              </div>
+          <Heading title="Explore Clubs" sub="Find your people. Follow your passion." to="/clubs" />
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
+            {clubCatalog.map(({ icon: I, ...club }) => (
+              <article key={club.id} className="reveal rounded-2xl border bg-card p-5 transition hover:-translate-y-1 hover:shadow-lg">
+                <div className={`grid size-11 place-items-center rounded-xl ${club.iconStyle}`}><I className="size-6" /></div>
+                <h3 className="mt-2 font-semibold">{club.name}</h3>
+                <p className="text-xs text-accent">{club.tagline}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{clubCounts.isError ? '—' : clubCounts.isLoading ? '…' : clubCountById.get(club.id) ?? '—'} members</p>
+                <Button asChild variant="outline" size="sm" className="mt-3 w-full rounded-full"><Link to="/clubs">Join</Link></Button>
+              </article>
             ))}
           </div>
         </section>
@@ -193,7 +188,8 @@ function Index() {
           <div className="text-sm space-y-1"><p className="font-semibold mb-2">Quick Links</p>
             <Link to="/" className="block opacity-75 hover:opacity-100 hover:text-primary">Home</Link>
             <Link to="/events" className="block opacity-75 hover:opacity-100 hover:text-primary">Events</Link>
-            {["Clubs", "Opportunities"].map((l) => <a key={l} href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">{l}</a>)}
+            <Link to="/clubs" className="block opacity-75 hover:opacity-100 hover:text-primary">Clubs</Link>
+            <a href="#" className="block opacity-75 hover:opacity-100 hover:text-primary">Opportunities</a>
             <Link to="/profile" className="block opacity-75 hover:opacity-100 hover:text-primary">Profile</Link>
           </div>
           <div><p className="font-semibold text-sm mb-3">Follow Us</p><div className="flex gap-3">{[Instagram, Youtube, Twitter, Linkedin].map((I, i) => <a key={i} href="#" className="size-9 rounded-lg border border-secondary-foreground/30 grid place-items-center hover:bg-primary hover:text-primary-foreground transition"><I className="size-4" /></a>)}</div></div>
