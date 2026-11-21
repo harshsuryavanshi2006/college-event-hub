@@ -248,7 +248,7 @@ function ClubsPage() {
                     <div className="relative h-40 overflow-hidden sm:h-48">
                       <img src={club.image} alt={club.name} loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
                       <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${club.categoryStyle}`}>{club.category}</span>
-                      <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-secondary/90 px-3 py-1 text-xs font-semibold text-secondary-foreground">
+                      <span aria-label={`Members: ${count}`} className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-secondary/90 px-3 py-1 text-xs font-semibold text-secondary-foreground">
                         <Users className="size-3.5" />{count}
                       </span>
                     </div>
@@ -317,7 +317,7 @@ function ClubsPage() {
             <label className="grid gap-2 text-sm font-medium">Why do you want this club? *<textarea name="reason" required maxLength={1000} rows={4} placeholder="Tell us more about your idea..." className="w-full resize-y rounded-xl border bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring" /></label>
             {suggestionMessage && <p role="status" className="text-sm text-accent">{suggestionMessage}</p>}
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={suggestionBusy} className="h-11 w-full rounded-full">
+            <Button type={account ? 'submit' : 'button'} onClick={account ? undefined : goToSignIn} disabled={suggestionBusy} className="h-11 w-full rounded-full">
               <Megaphone className="size-4" />{suggestionBusy ? 'Sending…' : account ? 'Submit Suggestion' : 'Sign In to Suggest'}
             </Button>
             {!account && <p className="text-center text-xs text-muted-foreground">Sign in is required to suggest a club or join a community.</p>}
